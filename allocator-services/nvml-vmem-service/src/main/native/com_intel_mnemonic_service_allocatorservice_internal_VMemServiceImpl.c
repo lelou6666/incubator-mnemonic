@@ -2,7 +2,7 @@
 Revise Date: 20 Apr. 2014
 *****************************************************************************************/
 
-#include "com_intel_bigdatamem_BigDataMemAllocator.h"
+#include "com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl.h"
 
 #include <libvmem.h>
 
@@ -18,7 +18,7 @@ static pthread_rwlock_t g_vmem_rwlock = PTHREAD_RWLOCK_INITIALIZER;
  *****************************************************************************/
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nallocate(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nallocate(
              JNIEnv* env,
              jobject this, jlong id,
              jlong size, jboolean initzero)
@@ -32,7 +32,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nallocate(
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nreallocate(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nreallocate(
              JNIEnv* env,
              jobject this, jlong id,
              jlong address,
@@ -51,7 +51,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nreallocate(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nfree(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nfree(
              JNIEnv* env,
              jobject this, jlong id,
              jlong address)
@@ -66,14 +66,14 @@ void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nfree(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nsync(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nsync(
              JNIEnv* env,
              jobject this, jlong id)
 {
 }
 
 JNIEXPORT
-jobject JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ncreateByteBuffer(
+jobject JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_ncreateByteBuffer(
             JNIEnv *env, jobject this, jlong id, jlong size)
 {
 	pthread_rwlock_rdlock(&g_vmem_rwlock);
@@ -87,7 +87,7 @@ jobject JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ncreateByteBuffer(
 }
 
 JNIEXPORT
-jobject JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nresizeByteBuffer(
+jobject JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nresizeByteBuffer(
             JNIEnv *env, jobject this, jlong id, jobject bytebuf, jlong size)
 {
 	pthread_rwlock_rdlock(&g_vmem_rwlock);
@@ -106,7 +106,7 @@ jobject JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nresizeByteBuffer(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ndestroyByteBuffer(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_ndestroyByteBuffer(
             JNIEnv *env, jobject this, jlong id, jobject bytebuf)
 {
 	pthread_rwlock_rdlock(&g_vmem_rwlock);
@@ -122,7 +122,7 @@ void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ndestroyByteBuffer(
 }
 
 JNIEXPORT 
-jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ninit
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_ninit
   (JNIEnv *env, jclass this, jlong capacity, jstring pathname, jboolean isnew)
 {
    pthread_rwlock_wrlock(&g_vmem_rwlock);
@@ -154,7 +154,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_ninit
 }
 
 JNIEXPORT 
-void JNICALL Java_com_intel_bigdatamem_BigDataMemAllocator_nclose
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_VMemServiceImpl_nclose
   (JNIEnv *env, jobject this, jlong id)
 {
 	pthread_rwlock_rdlock(&g_vmem_rwlock);
@@ -171,7 +171,7 @@ __attribute__((destructor))  void fini(void)
    if (NULL != g_vmp_ptr) {
 	   for (i = 0; i < g_vmp_count; ++i) {
 		   if (NULL != *(g_vmp_ptr + i)){
-				vmem_close(*(g_vmp_ptr + i));
+		     /* vmem_close(*(g_vmp_ptr + i)); undefined function */
 				*(g_vmp_ptr + i) = NULL;
 				pthread_mutex_destroy(g_vmem_mutex_ptr + i);
 		   }

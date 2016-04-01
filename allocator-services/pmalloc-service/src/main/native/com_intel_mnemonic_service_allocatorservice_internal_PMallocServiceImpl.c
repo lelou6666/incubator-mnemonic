@@ -2,7 +2,7 @@
 Revise Date: 20 Apr. 2014
 *****************************************************************************************/
 
-#include "com_intel_bigdatamem_BigDataPMemAllocator.h"
+#include "com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl.h"
 
 #include <pmalloc.h>
 
@@ -25,7 +25,7 @@ static pthread_rwlock_t g_pmp_rwlock = PTHREAD_RWLOCK_INITIALIZER;
  *****************************************************************************/
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nallocate(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nallocate(
              JNIEnv* env,
              jobject this, jlong id,
              jlong size, jboolean initzero)
@@ -47,7 +47,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nallocate(
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nreallocate(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nreallocate(
              JNIEnv* env,
              jobject this, jlong id,
              jlong address,
@@ -74,7 +74,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nreallocate(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nfree(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nfree(
              JNIEnv* env,
              jobject this, jlong id,
              jlong address)
@@ -94,14 +94,14 @@ void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nfree(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nsync(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nsync(
              JNIEnv* env,
              jobject this, jlong id)
 {
 }
 
 JNIEXPORT
-jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ncreateByteBuffer(
+jobject JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ncreateByteBuffer(
             JNIEnv *env, jobject this, jlong id, jlong size)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -121,7 +121,7 @@ jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ncreateByteBuffer
 }
 
 JNIEXPORT
-jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nretrieveByteBuffer(
+jobject JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nretrieveByteBuffer(
             JNIEnv *env, jobject this, jlong id, jlong e_addr)
 {
 	jobject ret = NULL;
@@ -134,7 +134,7 @@ jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nretrieveByteBuff
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nretrieveSize(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nretrieveSize(
             JNIEnv *env, jobject this, jlong id, jlong e_addr)
 {
 	jlong ret = 0L;
@@ -149,7 +149,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nretrieveSize(
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetByteBufferAddress(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ngetByteBufferHandler(
             JNIEnv *env, jobject this, jlong id, jobject bytebuf)
 {
 //	fprintf(stderr, "ngetByteBufferAddress Get Called %X, %X\n", env, bytebuf);
@@ -164,7 +164,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetByteBufferAddre
 }
 
 JNIEXPORT
-jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nresizeByteBuffer(
+jobject JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nresizeByteBuffer(
             JNIEnv *env, jobject this, jlong id, jobject bytebuf, jlong size)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -187,7 +187,7 @@ jobject JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nresizeByteBuffer
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ndestroyByteBuffer(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ndestroyByteBuffer(
             JNIEnv *env, jobject this, jlong id, jobject bytebuf)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -206,7 +206,7 @@ void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ndestroyByteBuffer(
 }
 
 JNIEXPORT
-void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nsetPersistKey(
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nsetHandler(
             JNIEnv *env, jobject this, jlong id, jlong key, jlong value)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -220,7 +220,7 @@ void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nsetPersistKey(
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetPersistKey(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ngetHandler(
             JNIEnv *env, jobject this, jlong id, jlong key)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -233,14 +233,14 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetPersistKey(
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_npersistKeyCapacity(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nhandlerCapacity(
             JNIEnv *env, jobject this)
 {
 	return  PMALLOC_KEYS;
 }
 
 JNIEXPORT
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetBaseAddress(
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ngetBaseAddress(
             JNIEnv *env, jobject this, jlong id)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);
@@ -251,7 +251,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ngetBaseAddress(
 }
 
 JNIEXPORT 
-jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ninit
+jlong JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_ninit
   (JNIEnv *env, jclass this, jlong capacity, jstring pathname, jboolean isnew)
 {
    pthread_rwlock_wrlock(&g_pmp_rwlock);
@@ -284,7 +284,7 @@ jlong JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_ninit
 }
 
 JNIEXPORT 
-void JNICALL Java_com_intel_bigdatamem_BigDataPMemAllocator_nclose
+void JNICALL Java_com_intel_mnemonic_service_allocatorservice_internal_PMallocServiceImpl_nclose
   (JNIEnv *env, jobject this, jlong id)
 {
 	pthread_rwlock_rdlock(&g_pmp_rwlock);

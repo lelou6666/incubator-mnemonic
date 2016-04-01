@@ -48,6 +48,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
         <executions>
@@ -58,48 +62,8 @@
             <configuration>
               <compilerArguments>-XDenableSunApiLintControl</compilerArguments>
               <processors>
-                <processor>com.intel.bigdatamem.NonVolatileEntityProcessor</processor>
+                <processor>${project.groupId}.NonVolatileEntityProcessor</processor>
               </processors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>build-native</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <echo>Java Home: ${java.home}</echo>
-                <mkdir dir="src/main/native/build" />
-                <exec dir="src/main/native/build" executable="cmake" failonerror="true">
-                  <arg value=".." />
-                </exec>
-                <exec dir="src/main/native/build" executable="make" failonerror="true">
-                  <env key="JAVA_HOME" value="${java.home}/.." />
-                </exec>
-                <copy file="src/main/native/build/libbigdatamem.so" tofile="src/main/native/dist/native/libbigdatamem.so" />
-                <copy file="src/main/native/build/libbigdatapmem.so" tofile="src/main/native/dist/native/libbigdatapmem.so" />
-              </target>
-            </configuration>
-          </execution>
-          <execution>
-            <id>clean-native</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <delete dir="src/main/native/build" />
-                <delete dir="src/main/native/dist" />
-              </target>
             </configuration>
           </execution>
         </executions>
@@ -118,18 +82,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-scm-publish-plugin</artifactId>
-        <configuration>
-          <checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-          <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-          <content>${project.reporting.outputDirectory}/apidocs</content>
-          <skipDeletedFiles>true</skipDeletedFiles>
-          <pubScmUrl>scm:git:https://github.com/bigdata-memory/mnenomic-project.git</pubScmUrl>
-          <scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
@@ -140,6 +92,7 @@
             <configuration>
               <transformers>
               </transformers>
+              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>
@@ -183,9 +136,9 @@
               <aggregate>true</aggregate>
               <show>public</show>
               <nohelp>true</nohelp>
-              <header>Mnenomic, ${project.version}</header>
-              <footer>Mnenomic, ${project.version}</footer>
-              <doctitle>Mnenomic, ${project.version}</doctitle>
+              <header>Mnenomic-core, ${project.version}</header>
+              <footer>Mnenomic-core, ${project.version}</footer>
+              <doctitle>Mnenomic-core, ${project.version}</doctitle>
               <links>
                 <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
                 <additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam>
